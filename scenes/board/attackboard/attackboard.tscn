@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dort33ln5u547"]
+
+[ext_resource type="TileSet" uid="uid://drcpx2832rvve" path="res://scenes/board/tileset.tres" id="1_kj7d1"]
+[ext_resource type="Script" path="res://scenes/board/attackboard/attackboard.gd" id="2_3n3ea"]
+
+[node name="Attackboard" type="TileMap"]
+tile_set = ExtResource("1_kj7d1")
+format = 2
+script = ExtResource("2_3n3ea")

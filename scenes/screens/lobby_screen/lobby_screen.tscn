@@ -1,0 +1,129 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2r47lj6tgwwx"]
+
+[ext_resource type="Script" path="res://scenes/screens/lobby_screen/lobby_screen.gd" id="1_il2wg"]
+[ext_resource type="PackedScene" uid="uid://c88pkwvqhptag" path="res://prefabs/maps/chessboard/chessboard.tscn" id="2_de55b"]
+[ext_resource type="PackedScene" uid="uid://bcd4n87iyvh13" path="res://scenes/screens/lobby_screen/lobby_players/lobby_players.tscn" id="3_8rtko"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_52tny"]
+properties/0/path = NodePath("HBoxContainer/VBoxContainer/GridContainer/PlayersOptions:selected")
+properties/0/spawn = true
+properties/0/sync = false
+properties/0/watch = true
+properties/1/path = NodePath("HBoxContainer/VBoxContainer/GridContainer/MapOptions:selected")
+properties/1/spawn = false
+properties/1/sync = false
+properties/1/watch = true
+
+[node name="LobbyScreen" type="MarginContainer" node_paths=PackedStringArray("players_options", "map_options", "subviewport", "subviewport_map", "start_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("1_il2wg")
+players_options = NodePath("HBoxContainer/VBoxContainer/GridContainer/PlayersOptions")
+map_options = NodePath("HBoxContainer/VBoxContainer/GridContainer/MapOptions")
+subviewport = NodePath("HBoxContainer/VBoxContainer/SubViewportContainer/SubViewport")
+subviewport_map = NodePath("HBoxContainer/VBoxContainer/SubViewportContainer/SubViewport/Chessboard")
+start_button = NodePath("HBoxContainer/VBoxContainer2/StartButton")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Players"
+
+[node name="PlayersOptions" type="OptionButton" parent="HBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+disabled = true
+item_count = 2
+selected = 0
+popup/item_0/text = "2"
+popup/item_0/id = 0
+popup/item_1/text = "4"
+popup/item_1/id = 1
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Map"
+
+[node name="MapOptions" type="OptionButton" parent="HBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+disabled = true
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SubViewport" type="SubViewport" parent="HBoxContainer/VBoxContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(250, 250)
+render_target_update_mode = 4
+
+[node name="Chessboard" parent="HBoxContainer/VBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("2_de55b")]
+scale = Vector2(0.244, 0.244)
+
+[node name="Camera2D" type="Camera2D" parent="HBoxContainer/VBoxContainer/SubViewportContainer/SubViewport"]
+
+[node name="Back" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 10
+text = "Back"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Players"
+horizontal_alignment = 1
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Ready?"
+
+[node name="LobbyPlayers" parent="HBoxContainer/VBoxContainer2" instance=ExtResource("3_8rtko")]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="StartButton" type="Button" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 32
+disabled = true
+text = " Start Game "
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_52tny")
+
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/GridContainer/PlayersOptions" to="." method="_on_players_options_item_selected"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/GridContainer/MapOptions" to="." method="_on_map_options_item_selected"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer2/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="players_changed" from="HBoxContainer/VBoxContainer2/LobbyPlayers" to="." method="_on_lobby_players_players_changed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer2/StartButton" to="." method="_on_start_button_pressed"]

@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://j3vbolqj0igb"]
+
+[ext_resource type="Script" path="res://scenes/screens/start_screen/start_screen.gd" id="1_f4tl2"]
+
+[node name="StartScreen" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("1_f4tl2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 128
+text = "Game Title"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HostGame" type="Button" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Host Game"
+
+[node name="ConnectGame" type="Button" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Connect to Game"
+
+[node name="Exit" type="Button" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Exit"
+
+[connection signal="pressed" from="VBoxContainer/GridContainer/HostGame" to="." method="_on_host_game_pressed"]
+[connection signal="pressed" from="VBoxContainer/GridContainer/ConnectGame" to="." method="_on_connect_game_pressed"]
+[connection signal="pressed" from="VBoxContainer/GridContainer/Exit" to="." method="_on_exit_pressed"]

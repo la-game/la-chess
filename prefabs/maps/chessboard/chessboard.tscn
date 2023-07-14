@@ -1,0 +1,48 @@
+[gd_scene load_steps=10 format=3 uid="uid://c88pkwvqhptag"]
+
+[ext_resource type="Script" path="res://prefabs/maps/chessboard/chessboard.gd" id="1_owei8"]
+[ext_resource type="PackedScene" uid="uid://esxlr3gtb3mm" path="res://scenes/map/battle_map/battle_map.tscn" id="2_p8t7i"]
+[ext_resource type="PackedScene" uid="uid://cd5ggn185uo3b" path="res://scenes/map/build_map/build_map.tscn" id="3_kqj6y"]
+[ext_resource type="PackedScene" uid="uid://draeuop4qfwq1" path="res://scenes/board/floorboard/floorboard.tscn" id="4_g5s3q"]
+[ext_resource type="PackedScene" uid="uid://dcn1kp18xn14x" path="res://scenes/board/buildboard/buildboard.tscn" id="5_6q85e"]
+[ext_resource type="PackedScene" uid="uid://dort33ln5u547" path="res://scenes/board/attackboard/attackboard.tscn" id="6_hc4ua"]
+[ext_resource type="PackedScene" uid="uid://4u60tya7wvsa" path="res://scenes/board/moveboard/moveboard.tscn" id="7_60tbc"]
+[ext_resource type="PackedScene" uid="uid://brm0cmqbmo6c8" path="res://scenes/board/towerboard/towerboard.tscn" id="8_6g0wk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_81wi3"]
+size = Vector2(1024, 1024)
+
+[node name="Chessboard" type="Node2D" node_paths=PackedStringArray("build_map", "battle_map")]
+script = ExtResource("1_owei8")
+build_map = NodePath("BuildMap")
+battle_map = NodePath("BattleMap")
+
+[node name="BuildMap" parent="." node_paths=PackedStringArray("floorboard", "towerboard", "buildboards", "area") instance=ExtResource("3_kqj6y")]
+floorboard = NodePath("../Floorboard")
+towerboard = NodePath("../Towerboard")
+buildboards = [NodePath("../Buildboard"), NodePath("../Buildboard2")]
+area = NodePath("../Area2D")
+
+[node name="BattleMap" parent="." node_paths=PackedStringArray("floorboard", "towerboard", "attackboard", "moveboard") instance=ExtResource("2_p8t7i")]
+floorboard = NodePath("../Floorboard")
+towerboard = NodePath("../Towerboard")
+attackboard = NodePath("../Attackboard")
+moveboard = NodePath("../Moveboard")
+
+[node name="Floorboard" parent="." instance=ExtResource("4_g5s3q")]
+layer_0/tile_data = PackedInt32Array(-1, 65536, 0, -196612, 65536, 0, -131076, 0, 0, -65540, 65536, 0, -4, 0, 0, -196611, 0, 0, -131075, 65536, 0, -65539, 0, 0, -3, 65536, 0, -196610, 65536, 0, -131074, 0, 0, -65538, 65536, 0, -2, 0, 0, -196609, 0, 0, -131073, 65536, 0, -65537, 0, 0, -262144, 65536, 0, -131072, 65536, 0, -65536, 0, 0, -196607, 65536, 0, -131071, 0, 0, -65535, 65536, 0, -262142, 65536, 0, -131070, 65536, 0, -65534, 0, 0, -131069, 0, 0, -65533, 65536, 0, 0, 65536, 0, 65536, 0, 0, 131072, 65536, 0, 196608, 0, 0, 1, 0, 0, 65537, 65536, 0, 131073, 0, 0, 196609, 65536, 0, 2, 65536, 0, 65538, 0, 0, 131074, 65536, 0, 196610, 0, 0, 3, 0, 0, 65539, 65536, 0, 131075, 0, 0, 196611, 65536, 0, 65532, 65536, 0, 131068, 0, 0, 196604, 65536, 0, 262140, 0, 0, 65533, 0, 0, 131069, 65536, 0, 196605, 0, 0, 262141, 65536, 0, 65534, 65536, 0, 131070, 0, 0, 196606, 65536, 0, 262142, 0, 0, 65535, 0, 0, 131071, 65536, 0, 196607, 0, 0, 262143, 65536, 0, -196605, 65536, 0, -196608, 0, 0, -262143, 0, 0, -196606, 0, 0, -262141, 0, 0)
+
+[node name="Towerboard" parent="." instance=ExtResource("8_6g0wk")]
+
+[node name="Attackboard" parent="." instance=ExtResource("6_hc4ua")]
+
+[node name="Moveboard" parent="." instance=ExtResource("7_60tbc")]
+
+[node name="Buildboard" parent="." instance=ExtResource("5_6q85e")]
+
+[node name="Buildboard2" parent="." instance=ExtResource("5_6q85e")]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_81wi3")

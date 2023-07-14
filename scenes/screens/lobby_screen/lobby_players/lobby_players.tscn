@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcd4n87iyvh13"]
+
+[ext_resource type="Script" path="res://scenes/screens/lobby_screen/lobby_players/lobby_players.gd" id="1_2qof4"]
+
+[node name="LobbyPlayers" type="GridContainer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -40.0
+offset_right = 40.0
+offset_bottom = 56.0
+grow_horizontal = 2
+columns = 4
+script = ExtResource("1_2qof4")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Player 1"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+text = "✔️"
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+text = "Player 2"
+
+[node name="Label4" type="Label" parent="."]
+layout_mode = 2
+text = "✔️"

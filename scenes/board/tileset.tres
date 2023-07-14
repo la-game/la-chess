@@ -1,0 +1,17 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://drcpx2832rvve"]
+
+[ext_resource type="Texture2D" uid="uid://crgvr54q8udd2" path="res://sprites/chessboard.svg" id="1_qjj2m"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5v5gt"]
+texture = ExtResource("1_qjj2m")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[resource]
+tile_size = Vector2i(128, 128)
+sources/0 = SubResource("TileSetAtlasSource_5v5gt")

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcn1kp18xn14x"]
+
+[ext_resource type="TileSet" uid="uid://drcpx2832rvve" path="res://scenes/board/tileset.tres" id="1_ag8i4"]
+[ext_resource type="Script" path="res://scenes/board/buildboard/buildboard.gd" id="1_uxrs4"]
+
+[node name="Buildboard" type="TileMap"]
+tile_set = ExtResource("1_ag8i4")
+format = 2
+script = ExtResource("1_uxrs4")

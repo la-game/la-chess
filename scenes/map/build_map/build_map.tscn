@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cd5ggn185uo3b"]
+
+[ext_resource type="Script" path="res://scenes/map/build_map/build_map.gd" id="1_gny17"]
+
+[node name="BuildMap" type="Node2D"]
+script = ExtResource("1_gny17")

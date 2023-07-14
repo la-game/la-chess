@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://4u60tya7wvsa"]
+
+[ext_resource type="TileSet" uid="uid://drcpx2832rvve" path="res://scenes/board/tileset.tres" id="1_0ha3d"]
+[ext_resource type="Script" path="res://scenes/board/moveboard/moveboard.gd" id="2_wtdy0"]
+
+[node name="Moveboard" type="TileMap"]
+tile_set = ExtResource("1_0ha3d")
+format = 2
+script = ExtResource("2_wtdy0")
