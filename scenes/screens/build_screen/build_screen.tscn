@@ -1,22 +1,24 @@
 [gd_scene load_steps=6 format=3 uid="uid://b0j5rqjwn2fwn"]
 
 [ext_resource type="Script" path="res://scenes/screens/build_screen/build_screen.gd" id="1_210jq"]
+[ext_resource type="PackedScene" uid="uid://c88pkwvqhptag" path="res://prefabs/maps/chessboard/chessboard.tscn" id="2_001qi"]
 [ext_resource type="Texture2D" uid="uid://ddg340ma7k0j" path="res://icon.svg" id="2_i5vcf"]
 [ext_resource type="PackedScene" uid="uid://bxk8q0o1hexjx" path="res://scenes/camera/board_camera/board_camera.tscn" id="3_i04fl"]
-[ext_resource type="PackedScene" uid="uid://qac603nh7dfi" path="res://prefabs/maps/big_square/big_square.tscn" id="3_t7f3v"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kqc7s"]
 
-[node name="BuildScreen" type="Node2D" node_paths=PackedStringArray("map", "towers_containter", "ready_count")]
+[node name="BuildScreen" type="Node2D" node_paths=PackedStringArray("map", "board_camera", "ready_count", "start_button", "towers_containter")]
 script = ExtResource("1_210jq")
-map = NodePath("BigSquare")
-towers_containter = NodePath("CanvasLayer/MarginContainer/VBoxContainer/ScrollContainer/TowersContainer")
+map = NodePath("Chessboard")
+board_camera = NodePath("BoardCamera")
 ready_count = NodePath("CanvasLayer/MarginContainer/VBoxContainer/ReadyCount")
+start_button = NodePath("CanvasLayer/MarginContainer/VBoxContainer/StartButton")
+towers_containter = NodePath("CanvasLayer/MarginContainer/VBoxContainer/ScrollContainer/TowersContainer")
 
-[node name="BigSquare" parent="." instance=ExtResource("3_t7f3v")]
+[node name="Chessboard" parent="." instance=ExtResource("2_001qi")]
 
 [node name="BoardCamera" parent="." node_paths=PackedStringArray("map") instance=ExtResource("3_i04fl")]
-map = NodePath("../BigSquare")
+map = NodePath("../Chessboard")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -35,6 +37,7 @@ layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="CanvasLayer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_colors/font_color = Color(0, 0.509804, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0.509804, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0.509804, 0, 1)
@@ -48,10 +51,17 @@ alignment = 2
 
 [node name="ReadyCount" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_colors/font_color = Color(0, 0.509804, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0.509804, 0, 1)
 text = "0/0"
 horizontal_alignment = 2
+
+[node name="StartButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Start Game"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -69,3 +79,4 @@ text = "1"
 icon = ExtResource("2_i5vcf")
 
 [connection signal="toggled" from="CanvasLayer/MarginContainer/VBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

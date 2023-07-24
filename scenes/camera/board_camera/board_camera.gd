@@ -1,3 +1,4 @@
+class_name BoardCamera
 extends Camera2D
 
 

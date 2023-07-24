@@ -5,14 +5,20 @@ var selected_tower: int = 0
 
 @export var map: Map
 
-@export var towers_containter: HBoxContainer
+@export var board_camera: BoardCamera
 
 @export var ready_count: Label
+
+@export var start_button: Button
+
+@export var towers_containter: HBoxContainer
 
 @onready var towers_available: Dictionary = map.towers.duplicate()
 
 
 func _ready() -> void:
+	board_camera.map = map
+	
 	if multiplayer.is_server():
 		uncheck_players_ready()
 	
@@ -105,7 +111,39 @@ func refresh_ready_players() -> void:
 			counter += 1
 	
 	ready_count.text = "%s/%s" % [counter, map.get_max_players()]
+	start_button.visible = multiplayer.is_server() and counter == map.get_max_players()
+
+
+@rpc("authority", "call_remote", "reliable")
+func send_towers_positions() -> void:
+	var towers_src = map.build_map.towerboard.towers
+	var towers = {}
+	
+	for pos in map.build_map.towerboard.towers:
+		var tower: Tower = towers_src[pos]
+		towers[pos] = tower.IDENTIFIER
+	
+	build_player_towers.rpc_id(1, towers)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func build_player_towers(towers: Dictionary) -> void:
+	var player_id: int = multiplayer.get_remote_sender_id()
+	var player_towers_available: Dictionary = map.towers.duplicate()
+	
+	for pos in towers:
+		var tower: int = towers[pos]
+		var qty: int = player_towers_available[tower]
+		var local_pos: Vector2 = map.build_map.get_buildboard(player_id).map_to_local(pos)
+		
+		if qty > 0:
+			build_tower(tower, local_pos, player_id)
+			player_towers_available[tower] = qty - 1
 
 
 func _on_check_button_toggled(button_pressed: bool) -> void:
 	Players.update_info.rpc({"is_ready": button_pressed})
+
+
+func _on_start_button_pressed() -> void:
+	send_towers_positions.rpc()

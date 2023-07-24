@@ -16,6 +16,9 @@ var map: Map
 ## Defines who goes first, second, third, etc.
 var order: Array
 
+## The initial position from players towers.
+var towers_start_position: Dictionary
+
 ## Current turn
 var turn: int = 0
 
@@ -77,6 +80,11 @@ func set_map(new_map: String) -> void:
 func set_order(new_order: Array) -> void:
 	order = new_order
 	order_changed.emit()
+
+
+@rpc("authority", "call_local", "reliable")
+func set_towers_start_position(towers: Dictionary) -> void:
+	var id: int = multiplayer.get_remote_sender_id()
 
 
 func _on_peer_connected(id: int) -> void:
