@@ -1,14 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0j5rqjwn2fwn"]
+[gd_scene load_steps=6 format=3 uid="uid://b0j5rqjwn2fwn"]
 
 [ext_resource type="Script" path="res://scenes/screens/build_screen/build_screen.gd" id="1_210jq"]
 [ext_resource type="Texture2D" uid="uid://ddg340ma7k0j" path="res://icon.svg" id="2_i5vcf"]
 [ext_resource type="PackedScene" uid="uid://bxk8q0o1hexjx" path="res://scenes/camera/board_camera/board_camera.tscn" id="3_i04fl"]
 [ext_resource type="PackedScene" uid="uid://qac603nh7dfi" path="res://prefabs/maps/big_square/big_square.tscn" id="3_t7f3v"]
 
-[node name="BuildScreen" type="Node" node_paths=PackedStringArray("map", "towers_containter")]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kqc7s"]
+
+[node name="BuildScreen" type="Node2D" node_paths=PackedStringArray("map", "towers_containter", "ready_count")]
 script = ExtResource("1_210jq")
 map = NodePath("BigSquare")
-towers_containter = NodePath("CanvasLayer/MarginContainer/ScrollContainer/TowersContainer")
+towers_containter = NodePath("CanvasLayer/MarginContainer/VBoxContainer/ScrollContainer/TowersContainer")
+ready_count = NodePath("CanvasLayer/MarginContainer/VBoxContainer/ReadyCount")
 
 [node name="BigSquare" parent="." instance=ExtResource("3_t7f3v")]
 
@@ -18,23 +21,51 @@ map = NodePath("../BigSquare")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.509804, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.509804, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0.509804, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0.509804, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0.509804, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0.509804, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0.509804, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kqc7s")
+text = "Ready"
+alignment = 2
+
+[node name="ReadyCount" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.509804, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0.509804, 0, 1)
+text = "0/0"
+horizontal_alignment = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
 vertical_scroll_mode = 0
 
-[node name="TowersContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/ScrollContainer"]
+[node name="TowersContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="Button" type="Button" parent="CanvasLayer/MarginContainer/ScrollContainer/TowersContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/ScrollContainer/TowersContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "1"
 icon = ExtResource("2_i5vcf")
+
+[connection signal="toggled" from="CanvasLayer/MarginContainer/VBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]

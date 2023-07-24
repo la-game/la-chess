@@ -6,6 +6,12 @@ extends Node2D
 ## Emitted when the map detects a left click.
 signal left_clicked(global_pos: Vector2)
 
+enum {
+	TOWER_BUILT,
+	TOWER_DESTROIED,
+	NO_ACTION,
+}
+
 ## Floorboard responsible to know where the towers can exist.
 @export var floorboard: Floorboard
 
@@ -23,26 +29,17 @@ func _ready() -> void:
 	area.input_event.connect(_on_area_input_event)
 
 
-## Try to build a tower in the tile, otherwise try to destroy the tower in the tile.
-## [br]Return 1 if a tower was built.
-## [br]Return -1 if the tower was destroyed.
-## [br]Return 0 if none was possible.
-func toggle_tower(tower: Tower, local_pos: Vector2, player_id: int = multiplayer.get_unique_id()) -> bool:
+## Get the buildboard which a player can interact.
+func get_buildboard(player_id: int) -> Buildboard:
 	var index: int = Match.order.find(player_id)
-	var buildboard: Buildboard = buildboards[index]
-	
-	tower.front = buildboard.front
-	
-	if build_tower(tower, local_pos, buildboard):
-		return 1
-	elif destroy_tower(local_pos, buildboard):
-		return -1
-	return 0
+	return buildboards[index]
 
 
 ## Try to build a tower in a specific buildboard.
 ## [br]Returns true if successfuly build the tower, false otherwise.
-func build_tower(tower: Tower, local_pos: Vector2, buildboard: Buildboard) -> bool:
+func build_tower(tower: Tower, local_pos: Vector2, player_id: int) -> bool:
+	var buildboard: Buildboard = get_buildboard(player_id)
+	
 	# Don't build if there is no floor.
 	if floorboard.is_pos_empty(local_pos):
 		return false
@@ -51,12 +48,17 @@ func build_tower(tower: Tower, local_pos: Vector2, buildboard: Buildboard) -> bo
 	if not buildboard.block(local_pos):
 		return false
 	
+	tower.front = buildboard.front
+	tower.player_id = player_id
+	
 	return towerboard.create_tower(tower, local_pos)
 
 
 ## Try to destroy a tower in a specific buildboard.
 ## [br]Returns true if successfuly destroy the tower, false otherwise.
-func destroy_tower(local_pos: Vector2, buildboard: Buildboard) -> bool:
+func destroy_tower(local_pos: Vector2, player_id: int) -> bool:
+	var buildboard: Buildboard = get_buildboard(player_id)
+	
 	# Don't destroy if there is no floor.
 	if floorboard.is_pos_empty(local_pos):
 		return false
@@ -68,7 +70,7 @@ func destroy_tower(local_pos: Vector2, buildboard: Buildboard) -> bool:
 		return false
 	
 	# If you fail to unblock the tile, is not a blocked tile.
-	if buildboard.unblock(local_pos):
+	if not buildboard.unblock(local_pos):
 		return false
 	
 	return towerboard.erase_tower(tower)

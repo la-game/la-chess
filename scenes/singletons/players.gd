@@ -49,8 +49,8 @@ func update_info(new_info: Dictionary) -> void:
 
 ## When a new player connect, the server needs to send all public information to the new peer.
 @rpc("authority", "call_remote", "reliable")
-func update_infos(all_infos: Dictionary) -> void:
-	infos.merge(all_infos)
+func update_infos(all_infos: Dictionary, overwrite: bool = false) -> void:
+	infos.merge(all_infos, overwrite)
 	infos_changed.emit()
 
 
