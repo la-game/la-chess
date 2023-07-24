@@ -80,6 +80,7 @@ func toggle_tower(global_pos: Vector2) -> void:
 	)
 
 
+@rpc("authority", "call_local", "reliable")
 func build_tower(tower_id: int, local_pos: Vector2, player_id: int) -> bool:
 	if player_id == multiplayer.get_unique_id() and towers_available.get(tower_id, 0) <= 0:
 		return false
@@ -115,7 +116,7 @@ func refresh_ready_players() -> void:
 
 
 @rpc("authority", "call_remote", "reliable")
-func send_towers_positions() -> void:
+func request_towers_positions() -> void:
 	var towers_src = map.build_map.towerboard.towers
 	var towers = {}
 	
@@ -127,7 +128,7 @@ func send_towers_positions() -> void:
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func build_player_towers(towers: Dictionary) -> void:
+func build_player_towers(towers: Dictionary, is_recursion: bool = false) -> void:
 	var player_id: int = multiplayer.get_remote_sender_id()
 	var player_towers_available: Dictionary = map.towers.duplicate()
 	
@@ -137,8 +138,39 @@ func build_player_towers(towers: Dictionary) -> void:
 		var local_pos: Vector2 = map.build_map.get_buildboard(player_id).map_to_local(pos)
 		
 		if qty > 0:
-			build_tower(tower, local_pos, player_id)
+			build_tower.rpc(tower, local_pos, player_id)
 			player_towers_available[tower] = qty - 1
+	
+	Players.infos[player_id]["towers_sent"] = true
+	
+	if Players.are_towers_sent() and not is_recursion:
+		build_server_towers()
+
+
+func build_server_towers() -> void:
+	# Same logic from request_towers_positions()
+	var towers_src = map.build_map.towerboard.towers
+	var towers = {}
+	
+	for pos in map.build_map.towerboard.towers:
+		var tower: Tower = towers_src[pos]
+		towers[pos] = tower.IDENTIFIER
+	
+	# Same logic from build_player_towers()
+	var player_towers_available: Dictionary = map.towers.duplicate()
+	
+	for pos in towers:
+		var tower: int = towers[pos]
+		var qty: int = player_towers_available[tower]
+		var local_pos: Vector2 = map.build_map.get_buildboard(1).map_to_local(pos)
+		
+		if qty > 0:
+			build_tower.rpc(tower, local_pos, 1)
+			player_towers_available[tower] = qty - 1
+
+
+func start_game() -> void:
+	remove_child(map) # hold the map
 
 
 func _on_check_button_toggled(button_pressed: bool) -> void:
@@ -146,4 +178,5 @@ func _on_check_button_toggled(button_pressed: bool) -> void:
 
 
 func _on_start_button_pressed() -> void:
-	send_towers_positions.rpc()
+	Players.infos[multiplayer.get_unique_id()]["towers_sent"] = true
+	request_towers_positions.rpc()

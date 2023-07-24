@@ -13,6 +13,7 @@ var infos: Dictionary
 const _info: Dictionary = {
 	"nickname": "Player",
 	"is_ready": false,
+	"towers_sent": false,
 }
 
 
@@ -32,6 +33,13 @@ func reset() -> void:
 func are_ready() -> bool:
 	for info in infos.values():
 		if not info["is_ready"]:
+			return false
+	return true
+
+
+func are_towers_sent() -> bool:
+	for info in infos.values():
+		if not info["towers_sent"]:
 			return false
 	return true
 
