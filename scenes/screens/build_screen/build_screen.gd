@@ -167,10 +167,15 @@ func build_server_towers() -> void:
 		if qty > 0:
 			build_tower.rpc(tower, local_pos, 1)
 			player_towers_available[tower] = qty - 1
+	
+	start_game.rpc()
 
 
+@rpc("authority", "call_local", "reliable")
 func start_game() -> void:
-	remove_child(map) # hold the map
+	Match.map = map
+	remove_child(map)
+	get_tree().change_scene_to_file("res://scenes/screens/battle_screen/battle_screen.tscn")
 
 
 func _on_check_button_toggled(button_pressed: bool) -> void:

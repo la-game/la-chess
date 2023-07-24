@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://biwkp18nab8tb"]
+
+[ext_resource type="Script" path="res://scenes/screens/battle_screen/battle_screen.gd" id="1_jh0ff"]
+[ext_resource type="PackedScene" uid="uid://bxk8q0o1hexjx" path="res://scenes/camera/board_camera/board_camera.tscn" id="2_dlw3r"]
+
+[node name="BattleScreen" type="Node2D" node_paths=PackedStringArray("board_camera")]
+script = ExtResource("1_jh0ff")
+board_camera = NodePath("BoardCamera")
+
+[node name="BoardCamera" parent="." instance=ExtResource("2_dlw3r")]
