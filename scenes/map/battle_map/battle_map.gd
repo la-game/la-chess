@@ -49,18 +49,21 @@ func send_move(tower_tile: Vector2i, local_pos: Vector2) -> void:
 		return
 	
 	var tower: Tower = towerboard.towers[tower_tile]
-	var players_except_sender: Array = Players.infos.keys().filter(
-		func(k):
-			return k != multiplayer.get_remote_sender_id()
-	)
+	var players_ids: Array = Players.infos.keys()
+	
+	# Don't need to RPC the sender (he already made the action locally).
+	players_ids.erase(multiplayer.get_remote_sender_id())
+	
+	# Or the server (he will RPC if he is able to do the action).
+	players_ids.erase(1)
 	
 	if towerboard.move_tower(tower, local_pos):
-		for player in players_except_sender:
-			towerboard.request_move_tower.rpc_id(player, tower_tile, local_pos)
+		for player_id in players_ids:
+			towerboard.request_move_tower.rpc_id(player_id, tower_tile, local_pos)
 		Match.finish_turn.rpc()
 	elif towerboard.attack_tower(tower, local_pos):
-		for player in players_except_sender:
-			towerboard.request_attack_tower.rpc_id(player, tower_tile, local_pos)
+		for player_id in players_ids:
+			towerboard.request_attack_tower.rpc_id(player_id, tower_tile, local_pos)
 		Match.finish_turn.rpc()
 
 
