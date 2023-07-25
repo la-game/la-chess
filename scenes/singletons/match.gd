@@ -10,6 +10,9 @@ signal order_changed
 ## Emitted when the turn change.
 signal turn_changed
 
+## Emitted when the match ends.
+signal match_ended
+
 ## The current map from the match.
 var map: Map
 
@@ -23,6 +26,7 @@ var turn: int = 0
 func _ready() -> void:
 	reset()
 	
+	turn_changed.connect(_on_turn_changed)
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
@@ -77,6 +81,16 @@ func set_map(new_map: String) -> void:
 func set_order(new_order: Array) -> void:
 	order = new_order
 	order_changed.emit()
+
+
+func _on_turn_changed() -> void:
+	var player_id: int = get_turn_player()
+	var is_king_alive: bool = get_towerboard().is_king_alive(player_id)
+	
+	if get_towerboard().kings_remaining() <= 1:
+		match_ended.emit()
+	elif not get_towerboard().is_king_alive(player_id):
+		finish_turn.rpc()
 
 
 func _on_peer_connected(id: int) -> void:
