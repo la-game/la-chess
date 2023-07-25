@@ -1,13 +1,22 @@
 extends Node
 
 
+enum {
+	KING,
+	QUEEN,
+	KNIGHT,
+	ROOK,
+	BISHOP,
+	PAWN,
+}
+
 var all: Dictionary = {
-	0: "res://prefabs/towers/king/king.tscn",
-	1: "res://prefabs/towers/queen/queen.tscn",
-	2: "res://prefabs/towers/knight/knight.tscn",
-	3: "res://prefabs/towers/rook/rook.tscn",
-	4: "res://prefabs/towers/bishop/bishop.tscn",
-	5: "res://prefabs/towers/pawn/pawn.tscn",
+	KING: "res://prefabs/towers/king/king.tscn",
+	QUEEN: "res://prefabs/towers/queen/queen.tscn",
+	KNIGHT: "res://prefabs/towers/knight/knight.tscn",
+	ROOK: "res://prefabs/towers/rook/rook.tscn",
+	BISHOP: "res://prefabs/towers/bishop/bishop.tscn",
+	PAWN: "res://prefabs/towers/pawn/pawn.tscn",
 }
 
 

@@ -27,6 +27,7 @@ func _ready() -> void:
 	reset()
 	
 	turn_changed.connect(_on_turn_changed)
+	
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
@@ -84,13 +85,16 @@ func set_order(new_order: Array) -> void:
 
 
 func _on_turn_changed() -> void:
-	var player_id: int = get_turn_player()
-	var is_king_alive: bool = get_towerboard().is_king_alive(player_id)
+	var player: int = get_turn_player()
+	var players_with_king: Array[int] = get_towerboard().kings_alive()
 	
-	if get_towerboard().kings_remaining() <= 1:
-		match_ended.emit()
-	elif not get_towerboard().is_king_alive(player_id):
-		finish_turn.rpc()
+	print("PROCESSING")
+	if players_with_king.size() <= 1:
+		print("END GAME")
+		match_ended.emit(players_with_king[0])
+	elif not player in players_with_king:
+		print("TURN SKIPPED")
+		finish_turn.rpc() # Skip players that already lost the game.
 
 
 func _on_peer_connected(id: int) -> void:

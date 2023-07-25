@@ -104,18 +104,15 @@ func is_tile_empty(tile: Vector2i, _layer: int = 0) -> bool:
 	return towers.get(tile) == null
 
 
-## Check if the player King still alive.
-func is_king_alive(player_id: int) -> bool:
+## Gets the players who still have the king.
+func kings_alive() -> Array[int]:
+	var players_id: Array[int] = []
+	
 	for tower in get_towers():
-		if tower.player_id == player_id and tower.IDENTIFIER == 0:
-			return true
-	return false
-
-
-func kings_remaining() -> int:
-	return get_towers().reduce(
-		func(total, tower: Tower): return total + tower.IDENTIFIER, 0
-	)
+		if tower.IDENTIFIER == Towers.KING:
+			players_id.append(tower.player_id)
+	
+	return players_id
 
 
 ## Tower can't be passed through RPC, this only exist so the server can call this action in others.
