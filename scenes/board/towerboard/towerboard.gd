@@ -5,8 +5,17 @@ extends Board
 var towers: Dictionary = {}
 
 
+## Get a tower in a specific location.
 func get_tower(local_pos: Vector2) -> Tower:
 	return towers.get(local_to_map(local_pos))
+
+
+## Get all towers in the board.
+## It's sugar syntax for when you want an Array[Towers].
+func get_towers() -> Array[Tower]:
+	var all_towers: Array[Tower] = []
+	all_towers.assign(towers.values())
+	return all_towers
 
 
 func get_tower_tile(tower: Tower):
@@ -36,6 +45,7 @@ func create_tower_on_tile(tower: Tower, tile: Vector2i) -> bool:
 
 
 ## Returns true if the tower attacked other tower, false otherwise.
+@rpc("authority", "call_remote", "reliable")
 func attack_tower(tower: Tower, local_pos: Vector2) -> bool:
 	var tile = get_tower_tile(tower)
 	var tile_destine = local_to_map(local_pos)
@@ -53,7 +63,7 @@ func move_tower(tower: Tower, local_pos: Vector2) -> bool:
 	
 	if tile_destine in tower.get_move_tiles(tile):
 		return move_tower_on_tile(tile, tile_destine)
-	return move_tower_on_tile(tile, tile_destine)
+	return false
 
 
 ## Returns true if the tower moved, false otherwise.
@@ -92,3 +102,17 @@ func erase_tower_on_tile(tile: Vector2i) -> bool:
 ## Overwrite [Board.is_tile_empty].
 func is_tile_empty(tile: Vector2i, _layer: int = 0) -> bool:
 	return towers.get(tile) == null
+
+
+## Tower can't be passed through RPC, this only exist so the server can call this action in others.
+@rpc("authority", "call_remote", "reliable")
+func request_move_tower(tower_tile: Vector2i, local_pos: Vector2) -> void:
+	var tower: Tower = towers[tower_tile]
+	move_tower(tower, local_pos)
+
+
+## Tower can't be passed through RPC, this only exist so the server can call this action in others.
+@rpc("authority", "call_remote", "reliable")
+func request_attack_tower(tower_tile: Vector2i, local_pos: Vector2) -> void:
+	var tower: Tower = towers[tower_tile]
+	attack_tower(tower, local_pos)

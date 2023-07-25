@@ -74,10 +74,9 @@ func toggle_tower(global_pos: Vector2) -> void:
 	if buildboard.is_pos_empty(local_pos):
 		return
 	
-	(
-		build_tower(selected_tower, local_pos, player_id)
-		or map.build_map.destroy_tower(local_pos, player_id)
-	)
+	
+	if not build_tower(selected_tower, local_pos, player_id):
+		map.build_map.destroy_tower(local_pos, player_id)
 
 
 @rpc("authority", "call_local", "reliable")

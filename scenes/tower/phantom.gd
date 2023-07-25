@@ -13,11 +13,12 @@ func _init(tower: Tower, on_released: Callable) -> void:
 	modulate.a = 0.4
 	
 	released.connect(on_released)
-	get_tree().root.add_child(self)
+	tower.add_child(self)
 
 
 func _process(_delta: float) -> void:
 	global_position = get_global_mouse_position()
+	visible = _tower.global_position.distance_to(global_position) > 50
 
 
 func _input(event: InputEvent) -> void:
