@@ -3,7 +3,9 @@ extends Node2D
 
 var selected_tower: int = 0
 
-@export var map: Map
+var towers_available: Dictionary
+
+var map: Map
 
 @export var board_camera: BoardCamera
 
@@ -13,11 +15,13 @@ var selected_tower: int = 0
 
 @export var towers_containter: HBoxContainer
 
-@onready var towers_available: Dictionary = map.towers.duplicate()
-
 
 func _ready() -> void:
+	map = Match.map
 	board_camera.map = map
+	towers_available = map.towers.duplicate()
+	
+	add_child(map)
 	
 	if multiplayer.is_server():
 		uncheck_players_ready()
@@ -172,7 +176,6 @@ func build_server_towers() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func start_game() -> void:
-	Match.map = map
 	remove_child(map)
 	get_tree().change_scene_to_file("res://scenes/screens/battle_screen/battle_screen.tscn")
 

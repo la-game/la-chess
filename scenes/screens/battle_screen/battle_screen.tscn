@@ -11,15 +11,17 @@ font_size = 128
 shadow_size = 32
 shadow_color = Color(0, 0, 0, 1)
 
-[node name="BattleScreen" type="Node2D" node_paths=PackedStringArray("winner_label")]
+[node name="BattleScreen" type="Node2D" node_paths=PackedStringArray("board_camera", "winner_container", "winner_label")]
 script = ExtResource("1_jh0ff")
-winner_label = NodePath("CanvasLayer/WinnerLabel")
+board_camera = NodePath("BoardCamera")
+winner_container = NodePath("CanvasLayer/MarginContainer")
+winner_label = NodePath("CanvasLayer/MarginContainer/VBoxContainer/WinnerLabel")
 
 [node name="BoardCamera" parent="." instance=ExtResource("2_dlw3r")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="WinnerLabel" type="Label" parent="CanvasLayer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,8 +29,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="WinnerLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
 text = "WINNER
 %s"
 label_settings = SubResource("LabelSettings_6f72f")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Menu"
+
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

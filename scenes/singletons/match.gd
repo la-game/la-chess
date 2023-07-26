@@ -34,6 +34,7 @@ func _ready() -> void:
 
 ## Reset the match, setting the default values back.
 func reset() -> void:
+	map = null
 	order = [1] # The server
 	turn = 0
 
@@ -88,13 +89,11 @@ func _on_turn_changed() -> void:
 	var player: int = get_turn_player()
 	var players_with_king: Array[int] = get_towerboard().kings_alive()
 	
-	print("PROCESSING")
 	if players_with_king.size() <= 1:
-		print("END GAME")
 		match_ended.emit(players_with_king[0])
 	elif not player in players_with_king:
-		print("TURN SKIPPED")
-		finish_turn.rpc() # Skip players that already lost the game.
+		if multiplayer.is_server():
+			finish_turn.rpc() # Skip players that already lost the game.
 
 
 func _on_peer_connected(id: int) -> void:

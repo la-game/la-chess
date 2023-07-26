@@ -1,24 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0j5rqjwn2fwn"]
+[gd_scene load_steps=5 format=3 uid="uid://b0j5rqjwn2fwn"]
 
 [ext_resource type="Script" path="res://scenes/screens/build_screen/build_screen.gd" id="1_210jq"]
-[ext_resource type="PackedScene" uid="uid://c88pkwvqhptag" path="res://prefabs/maps/chessboard/chessboard.tscn" id="2_001qi"]
 [ext_resource type="Texture2D" uid="uid://ddg340ma7k0j" path="res://icon.svg" id="2_i5vcf"]
 [ext_resource type="PackedScene" uid="uid://bxk8q0o1hexjx" path="res://scenes/camera/board_camera/board_camera.tscn" id="3_i04fl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kqc7s"]
 
-[node name="BuildScreen" type="Node2D" node_paths=PackedStringArray("map", "board_camera", "ready_count", "start_button", "towers_containter")]
+[node name="BuildScreen" type="Node2D" node_paths=PackedStringArray("board_camera", "ready_count", "start_button", "towers_containter")]
 script = ExtResource("1_210jq")
-map = NodePath("Chessboard")
 board_camera = NodePath("BoardCamera")
 ready_count = NodePath("CanvasLayer/MarginContainer/VBoxContainer/ReadyCount")
 start_button = NodePath("CanvasLayer/MarginContainer/VBoxContainer/StartButton")
 towers_containter = NodePath("CanvasLayer/MarginContainer/VBoxContainer/ScrollContainer/TowersContainer")
 
-[node name="Chessboard" parent="." instance=ExtResource("2_001qi")]
-
-[node name="BoardCamera" parent="." node_paths=PackedStringArray("map") instance=ExtResource("3_i04fl")]
-map = NodePath("../Chessboard")
+[node name="BoardCamera" parent="." instance=ExtResource("3_i04fl")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
