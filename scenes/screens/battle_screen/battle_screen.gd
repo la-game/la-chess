@@ -31,7 +31,6 @@ func show_winner(nickname: String) -> void:
 
 
 func _on_match_ended(winner: int) -> void:
-	print("MATCH ENDED")
 	show_winner.rpc(Players.infos[winner]["nickname"])
 
 
