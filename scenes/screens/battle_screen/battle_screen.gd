@@ -31,7 +31,8 @@ func show_winner(nickname: String) -> void:
 
 
 func _on_match_ended(winner: int) -> void:
-	show_winner.rpc(Players.infos[winner]["nickname"])
+	if multiplayer.is_server():
+		show_winner.rpc(Players.infos[winner]["nickname"])
 
 
 func _on_back_button_pressed() -> void:
