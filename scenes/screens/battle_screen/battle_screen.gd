@@ -6,9 +6,11 @@ var map: Map
 
 @export var board_camera: BoardCamera
 
-@export var winner_container: Container
+@export var turn_label: Label
 
 @export var winner_label: Label
+
+@export var back_button: Button
 
 
 func _ready() -> void:
@@ -20,6 +22,7 @@ func _ready() -> void:
 	
 	map.build_map.disable()
 	map.battle_map.link_towers_to_click()
+	Match.turn_changed.connect(_on_turn_change)
 	Match.match_ended.connect(_on_match_ended)
 
 
@@ -27,7 +30,15 @@ func _ready() -> void:
 func show_winner(nickname: String) -> void:
 	map.set_process_input(false)
 	winner_label.text = "WINNER\n%s" % nickname
-	winner_container.visible = true
+	winner_label.visible = true
+	back_button.visible = true
+
+
+func _on_turn_change() -> void:
+	var player_id: int = Match.get_turn_player()
+	var nickname: String = Players.infos[player_id]["nickname"]
+	
+	turn_label.text = "%s turn" % nickname
 
 
 func _on_match_ended(winner: int) -> void:

@@ -73,6 +73,7 @@ func move_tower_on_tile(tile_origin: Vector2i, tile_destine: Vector2i) -> bool:
 	
 	towers[tile_destine] = towers[tile_origin]
 	towers[tile_destine].position = map_to_local(tile_destine)
+	towers[tile_destine].steps += 1
 	towers.erase(tile_origin)
 	
 	return true

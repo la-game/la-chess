@@ -12,6 +12,8 @@ var front: Vector2i
 
 var player_id: int
 
+var steps: int = 0
+
 @export var _area: Area2D
 
 @export var _border: Sprite2D

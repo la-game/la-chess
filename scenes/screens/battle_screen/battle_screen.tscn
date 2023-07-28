@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://biwkp18nab8tb"]
+[gd_scene load_steps=6 format=3 uid="uid://biwkp18nab8tb"]
 
 [ext_resource type="Script" path="res://scenes/screens/battle_screen/battle_screen.gd" id="1_jh0ff"]
 [ext_resource type="PackedScene" uid="uid://bxk8q0o1hexjx" path="res://scenes/camera/board_camera/board_camera.tscn" id="2_dlw3r"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xgvlm"]
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_r8w1t"]
 
@@ -11,18 +15,18 @@ font_size = 128
 shadow_size = 32
 shadow_color = Color(0, 0, 0, 1)
 
-[node name="BattleScreen" type="Node2D" node_paths=PackedStringArray("board_camera", "winner_container", "winner_label")]
+[node name="BattleScreen" type="Node2D" node_paths=PackedStringArray("board_camera", "turn_label", "winner_label", "back_button")]
 script = ExtResource("1_jh0ff")
 board_camera = NodePath("BoardCamera")
-winner_container = NodePath("CanvasLayer/MarginContainer")
+turn_label = NodePath("CanvasLayer/MarginContainer/VBoxContainer/TurnLabel")
 winner_label = NodePath("CanvasLayer/MarginContainer/VBoxContainer/WinnerLabel")
+back_button = NodePath("CanvasLayer/MarginContainer/VBoxContainer/BackButton")
 
 [node name="BoardCamera" parent="." instance=ExtResource("2_dlw3r")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -39,7 +43,14 @@ theme_override_constants/margin_bottom = 16
 layout_mode = 2
 alignment = 1
 
+[node name="TurnLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Player turn"
+label_settings = SubResource("LabelSettings_xgvlm")
+
 [node name="WinnerLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
@@ -50,6 +61,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BackButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4

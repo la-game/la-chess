@@ -23,4 +23,6 @@ func get_attack_tiles(tile: Vector2i) -> Array[Vector2i]:
 
 
 func get_move_tiles(tile: Vector2i) -> Array[Vector2i]:
+	if steps == 0:
+		return [tile + front, tile + front + front]
 	return [tile + front]
