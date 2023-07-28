@@ -1,12 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://cv2htf1q5k08"]
+[gd_scene load_steps=5 format=3 uid="uid://cv2htf1q5k08"]
 
 [ext_resource type="Script" path="res://prefabs/towers/rook/rook.gd" id="1_lnowt"]
 [ext_resource type="Texture2D" uid="uid://cl8y4awlai60t" path="res://sprites/towers/rook.svg" id="1_y0ef6"]
 [ext_resource type="PackedScene" uid="uid://bqxdw6to3f2v0" path="res://scenes/tower/area.tscn" id="2_g68gh"]
+[ext_resource type="Texture2D" uid="uid://c3gukqq6n5bim" path="res://sprites/border.svg" id="4_b0pcc"]
 
-[node name="Rook" type="Sprite2D" node_paths=PackedStringArray("_area")]
+[node name="Rook" type="Sprite2D" node_paths=PackedStringArray("_area", "_border")]
 texture = ExtResource("1_y0ef6")
 script = ExtResource("1_lnowt")
 _area = NodePath("Area")
+_border = NodePath("Border")
 
 [node name="Area" parent="." instance=ExtResource("2_g68gh")]
+
+[node name="Border" type="Sprite2D" parent="."]
+texture = ExtResource("4_b0pcc")

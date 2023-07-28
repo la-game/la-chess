@@ -50,6 +50,7 @@ func build_tower(tower: Tower, local_pos: Vector2, player_id: int) -> bool:
 	
 	tower.front = buildboard.front
 	tower.player_id = player_id
+	tower.set_border_color(Colors.get_player_color(player_id))
 	
 	return towerboard.create_tower(tower, local_pos)
 

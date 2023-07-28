@@ -14,9 +14,15 @@ var player_id: int
 
 @export var _area: Area2D
 
+@export var _border: Sprite2D
+
 
 func _ready() -> void:
 	_area.input_event.connect(_area_input_event)
+
+
+func set_border_color(color: Color) -> void:
+	_border.modulate = color
 
 
 func get_attack_tiles(_tile: Vector2i) -> Array[Vector2i]:

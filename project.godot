@@ -21,6 +21,7 @@ Maps="*res://scenes/singletons/maps.gd"
 Towers="*res://scenes/singletons/towers.gd"
 Match="*res://scenes/singletons/match.gd"
 Players="*res://scenes/singletons/players.gd"
+Colors="*res://scenes/singletons/colors.gd"
 
 [display]
 

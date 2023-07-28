@@ -1,12 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://bnuri3wavvrj5"]
+[gd_scene load_steps=5 format=3 uid="uid://bnuri3wavvrj5"]
 
 [ext_resource type="Script" path="res://prefabs/towers/queen/queen.gd" id="1_fi6o7"]
 [ext_resource type="Texture2D" uid="uid://dfc1a8hs2ye0u" path="res://sprites/towers/queen.svg" id="1_gitka"]
 [ext_resource type="PackedScene" uid="uid://bqxdw6to3f2v0" path="res://scenes/tower/area.tscn" id="3_2knc6"]
+[ext_resource type="Texture2D" uid="uid://c3gukqq6n5bim" path="res://sprites/border.svg" id="4_hir6q"]
 
-[node name="Queen" type="Sprite2D" node_paths=PackedStringArray("_area")]
+[node name="Queen" type="Sprite2D" node_paths=PackedStringArray("_area", "_border")]
 texture = ExtResource("1_gitka")
 script = ExtResource("1_fi6o7")
 _area = NodePath("Area")
+_border = NodePath("Sprite2D")
 
 [node name="Area" parent="." instance=ExtResource("3_2knc6")]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("4_hir6q")
