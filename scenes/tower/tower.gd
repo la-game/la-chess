@@ -25,6 +25,7 @@ func _ready() -> void:
 
 func set_border_color(color: Color) -> void:
 	_border.modulate = color
+	self_modulate = color
 
 
 func get_attack_tiles(_tile: Vector2i) -> Array[Vector2i]:

@@ -12,6 +12,7 @@ _area = NodePath("Area")
 _border = NodePath("Border")
 
 [node name="Area" parent="." instance=ExtResource("3_qe2kg")]
+visible = false
 
 [node name="Border" type="Sprite2D" parent="."]
 texture = ExtResource("4_rnly2")
