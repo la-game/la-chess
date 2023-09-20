@@ -6,7 +6,7 @@ extends Board
 const FREE_TILE: Vector2i = Vector2i(2,0)
 
 ## Tile that is blocked and no tower can be build in it.
-const BLOCK_TILE: Vector2i = Vector2i(-1,-1)
+const BLOCK_TILE: Vector2i = Vector2i(2,1)
 
 ## Towers built from this buildboard will take this vector as front.
 @export var front: Vector2i = Vector2i.UP
