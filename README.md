@@ -8,6 +8,8 @@ An experiment of chess game online
     - Classic chess map (1v1)
     - Two 4 players map (free for all)
 
+![Game image](img/example.png)
+
 ## How to play
 **Right click**: Center camera where you clicked (must be in the board)  
 **Left click and hold**: To move piece (your turn only)  
